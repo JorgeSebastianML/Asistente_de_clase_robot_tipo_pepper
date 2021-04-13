@@ -9,3 +9,7 @@ Se implemento la red OpenPose encontrada en el repositorio https://github.com/CM
 ## Clasificación de poses
 
 Se implemento la red convolucional Yolo v4 encontrada en el repositorio https://github.com/AlexeyAB/darknet por medio de OpenCV versión 4.x. la cual fue entrenada con las poses de interes Pregunta, Alto, Ninguna. Esta red tuvo un desempeño en datos de validación del 89.84% de accurracy. 
+
+## Clasificación de objetos
+
+Se implemento la red convolucional Yolo v4 encontrada en el repositorio https://github.com/AlexeyAB/darknet por medio de OpenCV versión 4.x. la cual fue entrenada con los objetos de interes, Botellas, Snacks, Osciloscopio, Multímetro, Generador de señales, Aparatos electrónicos, Fuente de alimentación. Esta red tuvo un desempeño en datos de validación del 80.8% de mean Average Precision. 
