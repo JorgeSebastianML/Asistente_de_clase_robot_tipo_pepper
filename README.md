@@ -13,3 +13,7 @@ Se implemento la red convolucional Yolo v4 encontrada en el repositorio https://
 ## Clasificación de objetos
 
 Se implemento la red convolucional Yolo v4 encontrada en el repositorio https://github.com/AlexeyAB/darknet por medio de OpenCV versión 4.x. la cual fue entrenada con los objetos de interes, Botellas, Snacks, Osciloscopio, Multímetro, Generador de señales, Aparatos electrónicos, Fuente de alimentación. Esta red tuvo un desempeño en datos de validación del 80.8% de mean Average Precision. 
+
+## Aprendizaje por refuerzo
+
+Se implemento la arquitectura Proximal Police Optimization y por medio del simulador P.E.R. Lab encontrado en el repositorio https://github.com/JorgeSebastianML/Unity_simulation_pepper_robot, se realizo una busqueda de grilla para encontrar la mejor arquitectura de red para este problema y la mejor definición de recompensas. 
