@@ -1,15 +1,23 @@
+# Importar librerias
 import numpy as np
 import cv2
 import time
+import warnings
+# Importar clases propias
 from Yolo.yolo_detection import Yolo_Detection
 from Open_pose.pose_detection import Pose_Detection
 from Kalman_filter.sort import Sort
-import warnings
+
+# Desactivar los mensajes de warnings
 warnings.filterwarnings("ignore")
 
+# Main
 def main(Camera = False):
+    # Instanciar objeto Yolo, para realizar el reconocimiento de objetos y de poses
     Yolo = Yolo_Detection(use_gpu=True, confidence=0.45, threshold=0.3, size=608)
+    # Instanciar objeto OpenPose para la recontrucion de poses
     OpenPose = Pose_Detection()
+    # Instanciar objeto sort para el uso del filtro de kalman
     sort = Sort()
     last_time = time.time()
     out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 29, (640, 480))
