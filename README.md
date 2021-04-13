@@ -2,6 +2,8 @@
 
 Este sistema multimodal fue construido por medio de aprendizaje por refuerzo, que le permitirá al robot tipo Pepper ser un apoyo para los profesores de laboratorio, en donde por medio de sus sensores infrarrojos, sus cámaras 2D y 3D obtiene información de su entorno. Que posteriormente son procesadas por múltiples modelos de aprendizaje automático, para obtener así una mayor información del ambiente, como una detección y reconocimiento de los objetos que el robot ve y la capacidad de reconstruir y clasificar las poses de los estudiantes.
 
+<img src="https://github.com/JorgeSebastianML/Asistente_de_clase_robot_tipo_pepper/blob/main/Img/Arquitectura_Español.png " width="300" height="500">
+
 ## Reconstrucción de poses 
 
 Se implemento la red OpenPose encontrada en el repositorio https://github.com/CMU-Perceptual-Computing-Lab/openpose por medio de OpenCV versión 4.x. Esta red fue modificada para tener en cuenta solo la recontrucion del torso para arriba. 
