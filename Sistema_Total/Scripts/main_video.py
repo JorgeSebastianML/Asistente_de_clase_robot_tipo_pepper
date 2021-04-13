@@ -7,13 +7,17 @@ from Kalman_filter.sort import Sort
 import warnings
 warnings.filterwarnings("ignore")
 
-def main():
+def main(Camera = False):
     Yolo = Yolo_Detection(use_gpu=True, confidence=0.45, threshold=0.3, size=608)
     OpenPose = Pose_Detection()
     sort = Sort()
     last_time = time.time()
-    out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 29, (1920, 1080))
-    cap = cv2.VideoCapture("../Include/Robot_Vision.mp4")
+    out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 29, (640, 480))
+    if Camera:
+        cap = cv2.VideoCapture(0)
+    else:
+        cap = cv2.VideoCapture("../Include/TestOBj.m4v")
+
     while True:
         ret, frame = cap.read()
         if not ret or cv2.waitKey(1) & 0xFF == ord('q'):
@@ -38,4 +42,4 @@ def main():
 
 if __name__ == '__main__':
     # Calling main() function
-    main()
+    main(Camera = True)
