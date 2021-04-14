@@ -4,12 +4,18 @@ import numpy as np
 import copy
 
 class Yolo_Detection:
+    # Inicializacion de la clase
     def __init__(self, use_gpu, confidence=0.6, threshold=0.5, size=608):
+        # Ruta en donde se almacena la arquitectura de la red
         self.cfg_path = "../Include/yolo-obj-test.cfg"
+        # Ruta en donde se almacena los pesos de la red
         self.weights_path = "../Include/yolo-obj-test_best.weights"
+        # Rita en donde se almacena la lista de nombres correspondientes a la clases que la red predice
         self.class_names_path = "../Include/obj.names"
+        # Se define la confianza el treshold para la deteccion
         self.confidence = confidence
         self.threshold = threshold
+        # Se define el tamaño de la imagen para entrar a la red 
         self.size_imge = size
         self.model = cv2.dnn.readNetFromDarknet(self.cfg_path, self.weights_path)
         if use_gpu == True:
