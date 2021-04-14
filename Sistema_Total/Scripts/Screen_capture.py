@@ -1,13 +1,18 @@
+# Importar librerias
 import pyscreenshot as ImageGrab
 import numpy as np
 import cv2
 import time
+import warnings
+# Importar clases propias
 from Yolo.yolo_detection import Yolo_Detection
 from Open_pose.pose_detection import Pose_Detection
 from Kalman_filter.sort import Sort
-import warnings
+
+# Desactivar los mensajes de warnings
 warnings.filterwarnings("ignore")
 
+# Funcion Main
 def main():
     Yolo = Yolo_Detection(use_gpu=True, confidence=0.45, threshold=0.3, size=608)
     OpenPose = Pose_Detection()

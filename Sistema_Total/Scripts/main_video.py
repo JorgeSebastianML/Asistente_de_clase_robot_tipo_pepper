@@ -1,5 +1,4 @@
 # Importar librerias
-import numpy as np
 import cv2
 import time
 import warnings
@@ -11,7 +10,7 @@ from Kalman_filter.sort import Sort
 # Desactivar los mensajes de warnings
 warnings.filterwarnings("ignore")
 
-# Main
+# Funcion Main
 def main(Camera = False):
     # Instanciar objeto Yolo, para realizar el reconocimiento de objetos y de poses
     Yolo = Yolo_Detection(use_gpu=True, confidence=0.45, threshold=0.3, size=608)
@@ -52,11 +51,12 @@ def main(Camera = False):
         result = Yolo.Draw_detection(Final_recongition, Poses)
         # Guardar el frame en el video
         out.write(result)
-        # Visualizar el frame en una ventana 
+        # Visualizar el frame en una ventana
         cv2.imshow('window', result)
+        # Calcular el tiempo de procesamiento del frame
         print('Frame took {} seconds'.format(time.time()-last_time))
         last_time = time.time()
 
 if __name__ == '__main__':
-    # Calling main() function
+    # Llamar la funcion main
     main(Camera = True)
