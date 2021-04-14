@@ -15,33 +15,42 @@ class Yolo_Detection:
         # Se define la confianza el treshold para la deteccion
         self.confidence = confidence
         self.threshold = threshold
-        # Se define el tamaño de la imagen para entrar a la red 
+        # Se define el tamaño de la imagen para entrar a la red
         self.size_imge = size
+        # Se carga la red junto con sus pesos por medio de la libreria OpenCV
         self.model = cv2.dnn.readNetFromDarknet(self.cfg_path, self.weights_path)
+        # Se habilita el uso de la GPU
         if use_gpu == True:
             self.model.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
             self.model.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+        # Se identifica las capas de la red, para identificar las neuronas de salida
         self.output_layer_names = self.model.getLayerNames()
         self.output_layer_names = [self.output_layer_names[i[0] - 1] for i in self.model.getUnconnectedOutLayers()]
+        # Se guarda en una lista los nombres de las clases
         self.labels = open(self.class_names_path).read().strip().split("\n")
 
-
+    # Funcion encardada de la deteccion
     def detection(self, image):
+        # Se determina el tamaño original de las imagenes de entrada
         (W, H) = (None, None)
         if W is None or H is None:
             (H, W) = image.shape[:2]
+        # Se escala la imagen al tamaño de entrada a red y se normaliza
         blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (self.size_imge, self.size_imge), swapRB=True, crop=False)
+        # Se pasa la imagen escalada a la red
         self.model.setInput(blob)
+        # Se realiza una prediccion
         model_output = self.model.forward(self.output_layer_names)
+        # Se revisa la prediccion
         boxes = []
         confidences = []
         class_ids = []
-
         for output in model_output:
             for detection in output:
                 scores = detection[5:]
                 class_id = np.argmax(scores)
                 confidence = scores[class_id]
+                # Se verifica que la prediccion tenga un confianza mayor a la umbral seleccionada
                 if confidence > self.confidence:
                     box = detection[0:4] * np.array([W, H, W, H])
                     (centerX, centerY, width, height) = box.astype("int")
