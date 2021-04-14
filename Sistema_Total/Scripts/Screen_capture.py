@@ -29,26 +29,34 @@ def main():
         screen = np.array(ImageGrab.grab(bbox=(67, 57, 707, 537)))
         # Realizar una conversion de color de RGB a BGR
         img= cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
+        # Procesar el frame con la red de recontruccion de poses OpenPose
         Poses = OpenPose.pose_construct(img)
-        Detections  = Yolo.detection(Poses)
+        # Procesar el resultado anterior con la ed Yolo para la deteccion de objetos y poses
+        Detections = Yolo.detection(Poses)
+        # Pasar la detecciones por el filtro de kalman
         traked_objects=sort.update(Detections)
-
+        # Desglosar la informacion obtenida y acomodarla para su posterior visualizacion
         Final_recongition=[]
         if (len(Detections) > 0):
             for i in range(len(Detections)):
                 x1, y1, x2, y2, _, _ = traked_objects[i]
                 _, _, _, _, confidences, personId= Detections[i]
                 Final_recongition.append([x1, y1, x2, y2, confidences, personId])
+        # Funcion que dibuja las detecciones sobre el frame
         result = Yolo.Draw_detection(Final_recongition, Poses)
+        # Guardar el frame en el video
         out.write(result)
+        # Visualizar el frame en una ventana
         cv2.imshow('window', result)
+        # Calcular el tiempo de procesamiento del frame
         print('Frame took {} seconds'.format(time.time()-last_time))
         last_time = time.time()
+        # condicion de terminacion del codigo
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             out.release()
             break
 
 if __name__ == '__main__':
-    # Calling main() function
+    # Llamar la funcion main
     main()

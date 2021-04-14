@@ -32,15 +32,16 @@ def main(Camera = False):
         ret, frame = cap.read()
         # condicion de terminacion del codigo
         if not ret or cv2.waitKey(1) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
             out.release()
             break
         # Procesar el frame con la red de recontruccion de poses OpenPose
         Poses = OpenPose.pose_construct(frame)
         # Procesar el resultado anterior con la ed Yolo para la deteccion de objetos y poses
-        Detections  = Yolo.detection(Poses)
+        Detections = Yolo.detection(Poses)
         # Pasar la detecciones por el filtro de kalman
         traked_objects=sort.update(Detections)
-        # Desglosar la informacion obtenida
+        # Desglosar la informacion obtenida y acomodarla para su posterior visualizacion
         Final_recongition=[]
         if (len(Detections) > 0):
             for i in range(len(Detections)):
