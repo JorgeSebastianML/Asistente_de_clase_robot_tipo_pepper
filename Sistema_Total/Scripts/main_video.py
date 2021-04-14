@@ -19,20 +19,25 @@ def main(Camera = False):
     OpenPose = Pose_Detection()
     # Instanciar objeto sort para el uso del filtro de kalman
     sort = Sort()
-    last_time = time.time()
+    # Instanciar el objecto para guardar video del resultado
     out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 29, (640, 480))
+    # If que controlar si se ejecuta con informacion de la camara web o de un video
     if Camera:
         cap = cv2.VideoCapture(0)
     else:
         cap = cv2.VideoCapture("../Include/TestOBj.m4v")
-
+    # Tomar el tiempo para analizar el rendimiento del sistema
+    last_time = time.time()
     while True:
+        # leer un frame
         ret, frame = cap.read()
+        # condicion de terminacion del codigo
         if not ret or cv2.waitKey(1) & 0xFF == ord('q'):
             out.release()
             break
-        #img= cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        # Procesar el frame con la red de recontruccion de poses OpenPose
         Poses = OpenPose.pose_construct(frame)
+        # Procesar el resultado anterior con la ed Yolo para la deteccion de objetos y poses
         Detections  = Yolo.detection(Poses)
         traked_objects=sort.update(Detections)
 
