@@ -39,16 +39,20 @@ def main(Camera = False):
         Poses = OpenPose.pose_construct(frame)
         # Procesar el resultado anterior con la ed Yolo para la deteccion de objetos y poses
         Detections  = Yolo.detection(Poses)
+        # Pasar la detecciones por el filtro de kalman
         traked_objects=sort.update(Detections)
-
+        # Desglosar la informacion obtenida
         Final_recongition=[]
         if (len(Detections) > 0):
             for i in range(len(Detections)):
                 x1, y1, x2, y2, _, _ = traked_objects[i]
                 _, _, _, _, confidences, personId= Detections[i]
                 Final_recongition.append([x1, y1, x2, y2, confidences, personId])
+        # Funcion que dibuja las detecciones sobre el frame
         result = Yolo.Draw_detection(Final_recongition, Poses)
+        # Guardar el frame en el video
         out.write(result)
+        # Visualizar el frame en una ventana 
         cv2.imshow('window', result)
         print('Frame took {} seconds'.format(time.time()-last_time))
         last_time = time.time()
