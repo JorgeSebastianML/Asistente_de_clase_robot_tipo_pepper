@@ -14,13 +14,20 @@ warnings.filterwarnings("ignore")
 
 # Funcion Main
 def main():
+    # Instanciar objeto Yolo, para realizar el reconocimiento de objetos y de poses
     Yolo = Yolo_Detection(use_gpu=True, confidence=0.45, threshold=0.3, size=608)
+    # Instanciar objeto OpenPose para la recontrucion de poses
     OpenPose = Pose_Detection()
+    # Instanciar objeto sort para el uso del filtro de kalman
     sort = Sort()
-    last_time = time.time()
+    # Instanciar el objecto para guardar video del resultado
     out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (640, 480))
+    # Tomar el tiempo para analizar el rendimiento del sistema
+    last_time = time.time()
     while True:
+        # leer un frame tomado de la pantalla
         screen = np.array(ImageGrab.grab(bbox=(67, 57, 707, 537)))
+        # Realizar una conversion de color de RGB a BGR
         img= cv2.cvtColor(screen, cv2.COLOR_RGB2BGR)
         Poses = OpenPose.pose_construct(img)
         Detections  = Yolo.detection(Poses)
