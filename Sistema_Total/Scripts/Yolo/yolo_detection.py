@@ -75,12 +75,18 @@ class Yolo_Detection:
     # Funcion para dibujar la deteccion en frame
     def Draw_detection(self, yolo_output, image):
         image_ = copy.deepcopy(image)
+        # Desglosar la informacion de la deteccion
         for bbox in yolo_output:
             color = (255, 0, 0)
+            # Crear bounding box
             bbox = list(np.array(bbox).astype(int))
             x, y, x2, y2, object_id, Name = bbox
+            # Guardar el nombre de la prediccion
             Name = self.labels[Name]
             print(Name)
+            # Dibujar el bounding box en el frame
             cv2.rectangle(image_, (x, y), (x2, y2), color, 2)
+            # Escribir la prediccion en el frame
             cv2.putText(image_, Name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
+        # Se retorna la imagen
         return image_

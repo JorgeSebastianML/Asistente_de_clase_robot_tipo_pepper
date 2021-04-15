@@ -1,7 +1,9 @@
+# Importar librerias
 import cv2
 import numpy as np
 
 class Pose_Detection:
+    # Inicializacion de la clase
     def __init__(self, MODE="MPI", use_gpu=True):
         if MODE is "COCO":
             self.protoFile = "../Include/coco/pose_deploy_linevec.prototxt"
