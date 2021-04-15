@@ -66,8 +66,10 @@ class Pose_Detection:
         points = []
         # Se recorre los puntos predecidos
         for i in range(self.nPoints):
+            # Se desglosa la informacion de la prediccion
             probMap = output[0, i, :, :]
             minVal, prob, minLoc, point = cv2.minMaxLoc(probMap)
+            # Se calcula la ubicacion del punto predicho en la imagen original
             x = (frameWidth * point[0]) / W
             y = (frameHeight * point[1]) / H
             if prob > self.threshold:
