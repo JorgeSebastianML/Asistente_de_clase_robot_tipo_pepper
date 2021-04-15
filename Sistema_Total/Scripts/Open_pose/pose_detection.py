@@ -7,17 +7,23 @@ class Pose_Detection:
     def __init__(self, MODE="MPI", use_gpu=True):
         # Se selecciona que modelo de recontruccion de poses utilizar
         if MODE is "COCO":
+            # Se carga la arquitectura y los pesos de la red
             self.protoFile = "../Include/coco/pose_deploy_linevec.prototxt"
             self.weightsFile = "../Include/coco/pose_iter_440000.caffemodel"
+            # Se especifica la cantidad puntos que puede predecir la red
             self.nPoints = 18
+            # Se crea una lista con la informacion de interconexion de los puntos
             self.POSE_PAIRS = [[1, 0], [1, 2], [1, 5], [2, 3], [3, 4], [5, 6], [6, 7], [1, 8], [8, 9], [9, 10], [1, 11],
                           [11, 12],
                           [12, 13], [0, 14], [0, 15], [14, 16], [15, 17]]
 
         elif MODE is "MPI":
+            # Se carga la arquitectura y los pesos de la red
             self.protoFile = "../Include/mpi/pose_deploy_linevec_faster_4_stages.prototxt"
             self.weightsFile = "../Include/mpi/pose_iter_160000.caffemodel"
+            # Se especifica la cantidad puntos que puede predecir la red
             self.nPoints = 15
+            # Se crea una lista con la informacion de interconexion de los puntos
             self.POSE_PAIRS = [[0, 1], [1, 2], [2, 3], [3, 4], [1, 5], [5, 6], [6, 7], [1, 14], [14, 8], [8, 9], [9, 10],
                           [14, 11],
                           [11, 12], [12, 13]]
@@ -72,20 +78,28 @@ class Pose_Detection:
             # Se calcula la ubicacion del punto predicho en la imagen original
             x = (frameWidth * point[0]) / W
             y = (frameHeight * point[1]) / H
+            # Se verifica que la probabilidad del que el punto es correcto supere el threshold seleccionado
             if prob > self.threshold:
+                # Se dibuja el punto predicho y se guarda en una lista
                 cv2.circle(frameCopy, (int(x), int(y)), 8, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
                 cv2.putText(frameCopy, "{}".format(i), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2,
                             lineType=cv2.LINE_AA)
                 points.append((int(x), int(y)))
             else:
                 points.append(None)
+        # Se recorre la lista que contiene la informacion de la intercionexion de los puntos
         for pair in self.POSE_PAIRS:
             partA = pair[0]
             partB = pair[1]
-
+            # Se verifica que ambos puntos existan
             if points[partA] and points[partB]:
+                # Se verifica que esten dentro de los puntos de interes
                 if partA < 8 or partA == 15:
+                    # Se dibuja la linea entre los puntos en la imagen
                     cv2.line(frame, points[partA], points[partB], (0, 255, 255), 2, lineType=cv2.LINE_AA)
+                    # Se dibuja el primer punto en la imagen
                     cv2.circle(frame, points[partA], 3, self.Colors[partA], thickness=-1, lineType=cv2.FILLED)
+                    # Se dibuja el segundo punto en la imagen
                     cv2.circle(frame, points[partB], 3, self.Colors[partB], thickness=-1, lineType=cv2.FILLED)
+        # Se retorna la imagen
         return frame
