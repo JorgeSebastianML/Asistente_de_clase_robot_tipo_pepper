@@ -5,6 +5,7 @@ import numpy as np
 class Pose_Detection:
     # Inicializacion de la clase
     def __init__(self, MODE="MPI", use_gpu=True):
+        # Se selecciona que modelo de recontruccion de poses utilizar
         if MODE is "COCO":
             self.protoFile = "../Include/coco/pose_deploy_linevec.prototxt"
             self.weightsFile = "../Include/coco/pose_iter_440000.caffemodel"
@@ -35,17 +36,21 @@ class Pose_Detection:
                       (133, 133, 133),  # 13. Rodilla Izquierda
                       (50, 50, 50),  # 14. Tobillo Izquierdo
                       (50, 100, 50)]  # 15. Ombligo
-
+        # Se define el tamaño de entrada de la imagen
         self.inWidth = 368
         self.inHeight = 368
         self.threshold = 0.2
+        # Se carga la arquitectura y pesos de la red con OpenCV
         self.net = cv2.dnn.readNetFromCaffe(self.protoFile, self.weightsFile)
+        # Se carga el modelo en GPU en caso de estar seleccionada
         if use_gpu==True:
             self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
+    # Funcion de reconstruccion de poses
     def pose_construct(self, frame):
         frameCopy = np.copy(frame)
+        # Se obtiene el tamaño de la imagen original
         frameWidth = frame.shape[1]
         frameHeight = frame.shape[0]
 
