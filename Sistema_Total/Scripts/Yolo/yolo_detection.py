@@ -52,6 +52,7 @@ class Yolo_Detection:
                 confidence = scores[class_id]
                 # Se verifica que la prediccion tenga un confianza mayor a la umbral seleccionada
                 if confidence > self.confidence:
+                    # Se guarda la informacion de las detecciones con suficiente confianza
                     box = detection[0:4] * np.array([W, H, W, H])
                     (centerX, centerY, width, height) = box.astype("int")
                     x = int(centerX - (width / 2))
@@ -60,6 +61,7 @@ class Yolo_Detection:
                     confidences.append(float(confidence))
                     class_ids.append(class_id)
                     print(confidence)
+        # Se organiza la informacion obtenida de la deteccion
         outputs_wrapper = list()
         idxs = cv2.dnn.NMSBoxes(boxes, confidences, self.confidence, self.threshold)
         if len(idxs) > 0:
@@ -67,9 +69,10 @@ class Yolo_Detection:
                 x, y = boxes[i][0], boxes[i][1]
                 w, h = boxes[i][2], boxes[i][3]
                 outputs_wrapper.append([x, y, w + x, h + y, confidences[i], class_ids[i]])
-
+        # se retorna toda la informacion correspondiente a la prediccion
         return np.array(outputs_wrapper)
 
+    # Funcion para dibujar la deteccion en frame
     def Draw_detection(self, yolo_output, image):
         image_ = copy.deepcopy(image)
         for bbox in yolo_output:
