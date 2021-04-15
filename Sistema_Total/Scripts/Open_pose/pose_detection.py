@@ -27,6 +27,7 @@ class Pose_Detection:
             self.POSE_PAIRS = [[0, 1], [1, 2], [2, 3], [3, 4], [1, 5], [5, 6], [6, 7], [1, 14], [14, 8], [8, 9], [9, 10],
                           [14, 11],
                           [11, 12], [12, 13]]
+            # Se declara los colores que tendra cada punto seguin su ubicacion
             self.Colors = [(255, 0, 0),  # 1. Cabeza
                       (0, 255, 0),  # 2. Cuello
                       (0, 0, 255),  # 3. Hombro derecho
