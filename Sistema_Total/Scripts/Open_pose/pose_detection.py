@@ -53,14 +53,18 @@ class Pose_Detection:
         # Se obtiene el tamaño de la imagen original
         frameWidth = frame.shape[1]
         frameHeight = frame.shape[0]
-
+        # Se escala la imagen al tamaño de entrada a red y se normaliza
         inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (self.inWidth, self.inHeight), (0, 0, 0), swapRB=False,
                                         crop=False)
+        # Se pasa la imagen escalada a la red
         self.net.setInput(inpBlob)
+        # Se realiza una prediccion
         output = self.net.forward()
+        # Se obtiene el tamaño de la salida
         H = output.shape[2]
         W = output.shape[3]
         points = []
+        # Se recorre los puntos predecidos
         for i in range(self.nPoints):
             probMap = output[0, i, :, :]
             minVal, prob, minLoc, point = cv2.minMaxLoc(probMap)
